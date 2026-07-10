@@ -40,7 +40,18 @@ def _build_tts(settings: Settings) -> TTSEngine:
 
 
 def _build_stt(settings: Settings) -> STTEngine:
-    raise NotImplementedError("Voice input arrives in Phase 3. Run with --mode text.")
+    timeout = settings.conversation.silence_timeout_seconds
+    if settings.stt.provider == "faster_whisper":
+        from .engines.whisper_stt import WhisperSTT
+
+        return WhisperSTT(settings.stt, timeout)
+    if settings.stt.provider == "vosk":
+        from .engines.vosk_stt import VoskSTT
+
+        return VoskSTT(settings.stt, timeout)
+    raise ValueError(
+        f"Unknown STT_PROVIDER '{settings.stt.provider}' (faster_whisper | vosk)"
+    )
 
 
 def _build_wake(settings: Settings) -> WakeWordDetector:
