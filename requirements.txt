@@ -1,0 +1,23 @@
+# Brain + tools
+google-genai
+
+# Config
+python-dotenv
+pyyaml
+
+# STT (choose at runtime via STT_PROVIDER)
+faster-whisper
+vosk
+sounddevice
+numpy
+
+# TTS (choose via tts.provider)
+edge-tts
+piper-tts
+miniaudio          # decodes Edge-TTS mp3 for playback through sounddevice
+
+# Wake word (Phase 4)
+pvporcupine
+
+# Tooling
+ruff
