@@ -16,15 +16,15 @@ import sys
 
 from .assistant import Assistant
 from .config import Settings, load_settings
-from .interfaces import LLMProvider, STTEngine, TTSEngine, WakeWordDetector
+from .interfaces import LLMProvider, STTEngine, ToolRegistry, TTSEngine, WakeWordDetector
 
 
-def _build_llm(settings: Settings) -> LLMProvider:
+def _build_llm(settings: Settings, registry: ToolRegistry) -> LLMProvider:
     if settings.llm.provider != "gemini":
         raise ValueError(f"Unknown llm.provider '{settings.llm.provider}' (only 'gemini' in v1)")
     from .engines.gemini_llm import GeminiProvider
 
-    return GeminiProvider(settings.llm)
+    return GeminiProvider(settings.llm, registry)
 
 
 def _build_tts(settings: Settings) -> TTSEngine:
@@ -54,9 +54,11 @@ def main() -> None:
     settings = load_settings(args.config)
 
     from .engines.console import ConsoleSTT, ConsoleTTS, ConsoleWake
+    from .tools import build_registry
 
     try:
-        llm = _build_llm(settings)
+        registry = build_registry(settings.tools)
+        llm = _build_llm(settings, registry)
         tts = ConsoleTTS() if args.mode == "text" else _build_tts(settings)
         stt = ConsoleSTT() if args.mode in ("text", "type") else _build_stt(settings)
         wake = ConsoleWake() if args.mode != "voice" else _build_wake(settings)
