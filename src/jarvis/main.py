@@ -28,7 +28,15 @@ def _build_llm(settings: Settings, registry: ToolRegistry) -> LLMProvider:
 
 
 def _build_tts(settings: Settings) -> TTSEngine:
-    raise NotImplementedError("Voice output arrives in Phase 2. Run with --mode text.")
+    if settings.tts.provider == "edge":
+        from .engines.edge_tts import EdgeTTS
+
+        return EdgeTTS(settings.tts)
+    if settings.tts.provider == "piper":
+        from .engines.piper_tts import PiperTTS
+
+        return PiperTTS(settings.tts)
+    raise ValueError(f"Unknown tts.provider '{settings.tts.provider}' (edge | piper)")
 
 
 def _build_stt(settings: Settings) -> STTEngine:
