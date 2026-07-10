@@ -1,0 +1,39 @@
+# Jarvis tunables. Secrets and provider switches that identify your machine
+# live in .env (see .env.example). Nothing reads this file except config.py.
+
+wake_word:
+  keyword: jarvis
+  sensitivity: 0.5                 # 0.0-1.0; higher = more sensitive, more false wakes
+
+stt:
+  # faster-whisper settings
+  whisper_model: base              # tiny | base | small | ...
+  # vosk settings
+  vosk_model_path: models/vosk-model-small-en-us-0.15
+  sample_rate: 16000
+
+llm:
+  provider: gemini                 # the switch for swapping providers later
+  model: gemini-2.0-flash
+  max_tool_iterations: 5
+  system_prompt: >
+    You are Jarvis, a concise voice assistant. Keep replies short and
+    conversational since they are spoken aloud. Avoid lists and markdown.
+    When asked to act on files, use the provided tools.
+
+tts:
+  provider: edge                   # edge | piper
+  edge_voice: en-US-GuyNeural
+  piper_model: models/piper/en_US-lessac-medium.onnx
+
+tools:
+  # ~ expands to your user profile (C:\Users\<you> on Windows).
+  workspace_root: ~/JarvisWorkspace
+  find_search_roots:
+    - ~/Documents
+    - ~/Desktop
+  find_max_results: 20
+
+conversation:
+  silence_timeout_seconds: 8
+  sleep_phrases: [go to sleep, goodbye, stop listening]
