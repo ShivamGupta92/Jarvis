@@ -1,0 +1,20 @@
+# Secrets and personal config
+.env
+.claude/settings.local.json
+
+# Vosk model (downloaded locally, large)
+models/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.ruff_cache/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
