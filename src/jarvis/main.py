@@ -55,7 +55,9 @@ def _build_stt(settings: Settings) -> STTEngine:
 
 
 def _build_wake(settings: Settings) -> WakeWordDetector:
-    raise NotImplementedError("The wake word arrives in Phase 4. Run with --mode text.")
+    from .engines.porcupine_wake import PorcupineWake
+
+    return PorcupineWake(settings.wake_word)
 
 
 def main() -> None:
